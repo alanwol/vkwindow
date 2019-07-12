@@ -41,14 +41,24 @@ private:
 	VkFormat _swapChainImageFormat;
 	VkExtent2D _swapChainExtent;
 	std::vector<VkImageView> _swapChainImageViews;
+	std::vector<VkFramebuffer> _swapChainFramebuffers;
 	VkRenderPass _renderPass = nullptr;
 	VkPipelineLayout _pipelineLayout = nullptr;
 	VkPipeline _graphicsPipeline = nullptr;
+	VkCommandPool _commandPool = nullptr;
+	std::vector<VkCommandBuffer> _commandBuffers;
+
+	std::vector<VkSemaphore> _imageAvailableSemaphores;
+	std::vector<VkSemaphore> _renderFinishedSemaphores;
+	std::vector<VkFence> _inFlightFences;
+	size_t _currentFrame = 0;
 
 	void initWindow();
 	void initVulkan();
 	void mainLoop();
 	void cleanup();
+
+	void drawFrame();
 
 	void createInstance();
 	void setupDebugMessenger();
@@ -59,6 +69,10 @@ private:
 	void createImageViews();
 	void createRenderPass();
 	void createGraphicsPipeline();
+	void createFramebuffers();
+	void createCommandPool();
+	void createCommandBuffers();
+	void createSyncObjects();
 
 	static void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 	static std::vector<const char*> getRequiredExtensions();
