@@ -52,6 +52,7 @@ private:
 	std::vector<VkSemaphore> _renderFinishedSemaphores;
 	std::vector<VkFence> _inFlightFences;
 	size_t _currentFrame = 0;
+	bool _framebufferResized = false;
 
 	void initWindow();
 	void initVulkan();
@@ -66,6 +67,8 @@ private:
 	void pickPhysicalDevice();
 	void createLogicalDevice();
 	void createSwapChain();
+	void recreateSwapChain();
+	void cleanupSwapChain();
 	void createImageViews();
 	void createRenderPass();
 	void createGraphicsPipeline();
@@ -92,5 +95,10 @@ private:
 		std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
 
 		return VK_FALSE;
+	}
+
+	static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
+		auto app = reinterpret_cast<AApplication*>(glfwGetWindowUserPointer(window));
+		app->_framebufferResized = true;
 	}
 };
